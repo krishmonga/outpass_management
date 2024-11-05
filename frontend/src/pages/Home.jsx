@@ -1,6 +1,7 @@
 // src/pages/Home.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './Home.css'; // Ensure this path is correct
 
 const Home = () => {
   const hostels = [
@@ -11,7 +12,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
+    <div className="home-container flex flex-col items-center justify-center">
       <h2 className="text-3xl font-semibold text-gray-700 mb-6">Choose Your Hostel</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {hostels.map((hostel) => (

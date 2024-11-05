@@ -7,6 +7,7 @@ import FacultyDashboard from './pages/FacultyDashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
 
+
 const App = () => {
   return (
     <Router>
