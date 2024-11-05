@@ -1,18 +1,31 @@
+// src/pages/Home.jsx
 import React from 'react';
-import HostelCard from '../components/Hostelcard';
-
-const azadImage = '/images/azad-hostel.jpg'; 
-const parmarImage = '/images/parmar-hostel.jpg';
-const shashtriImage = '/images/shashtri-hostel.jpg';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
+  const hostels = [
+    { name: 'Azad Hostel', image: '/images/azad-hostel.jpg' },
+    { name: 'Parmar Hostel', image: '/images/parmar-hostel.jpg' },
+    { name: 'Shashtri Hostel', image: '/images/shashtri-hostel.jpg' },
+    { name: 'Geeta Bhawan', image: '/images/tagore-hostel.jpg' },
+  ];
+
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Select a Hostel</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        <HostelCard name="Azad Hostel" image={azadImage} />
-        <HostelCard name="Parmar Hostel" image={parmarImage} />
-        <HostelCard name="Shashtri Hostel" image={shashtriImage} />
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
+      <h2 className="text-3xl font-semibold text-gray-700 mb-6">Choose Your Hostel</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {hostels.map((hostel) => (
+          <Link
+            to={`/${hostel.name.toLowerCase().replace(/\s+/g, '-')}`}
+            key={hostel.name}
+            className="bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition duration-300 flex flex-col"
+          >
+            <img src={hostel.image} alt={hostel.name} className="w-full h-48 object-cover" />
+            <div className="p-4 flex-grow flex flex-col justify-center items-center">
+              <h3 className="text-xl font-semibold text-gray-800 text-center">{hostel.name}</h3>
+            </div>
+          </Link>
+        ))}
       </div>
     </div>
   );

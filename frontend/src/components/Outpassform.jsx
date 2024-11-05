@@ -14,39 +14,51 @@ const OutpassForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-6">
-      <h3 className="text-xl font-semibold mb-4 text-blue-800">Outpass Request</h3>
-      <label className="block mb-2">
-        Name:
+    <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-lg p-8 max-w-md mx-auto">
+      <h3 className="text-2xl font-bold mb-6 text-blue-800 text-center">Outpass Request</h3>
+      
+      <label className="block mb-4">
+        <span className="text-gray-700">Name</span>
         <input
           type="text"
           name="name"
           value={formData.name}
           onChange={handleChange}
-          className="border border-gray-300 p-2 w-full mt-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-3 text-gray-700 focus:border-blue-500 focus:ring-blue-500"
+          placeholder="Enter your name"
+          required
         />
       </label>
-      <label className="block mb-2">
-        Date:
+      
+      <label className="block mb-4">
+        <span className="text-gray-700">Date</span>
         <input
           type="date"
           name="date"
           value={formData.date}
           onChange={handleChange}
-          className="border border-gray-300 p-2 w-full mt-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-3 text-gray-700 focus:border-blue-500 focus:ring-blue-500"
+          required
         />
       </label>
-      <label className="block mb-4">
-        Reason:
-        <input
-          type="text"
+      
+      <label className="block mb-6">
+        <span className="text-gray-700">Reason</span>
+        <textarea
           name="reason"
           value={formData.reason}
           onChange={handleChange}
-          className="border border-gray-300 p-2 w-full mt-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-3 text-gray-700 focus:border-blue-500 focus:ring-blue-500"
+          placeholder="Reason for outpass request"
+          rows="3"
+          required
+        ></textarea>
       </label>
-      <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+      
+      <button
+        type="submit"
+        className="w-full bg-blue-600 text-white font-semibold py-3 rounded-md hover:bg-blue-700 transition duration-200"
+      >
         Submit
       </button>
     </form>

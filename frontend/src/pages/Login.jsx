@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; // Added Link
 import axios from 'axios';
 
 const Login = () => {
@@ -43,9 +43,7 @@ const Login = () => {
                     </button>
                 </div>
                 <div className="mb-4">
-                    <label className="block mb-2" htmlFor="username">
-                        Username:
-                    </label>
+                    <label className="block mb-2" htmlFor="username">Username:</label>
                     <input
                         type="text"
                         name="username"
@@ -56,9 +54,7 @@ const Login = () => {
                     />
                 </div>
                 <div className="mb-4">
-                    <label className="block mb-2" htmlFor="password">
-                        Password:
-                    </label>
+                    <label className="block mb-2" htmlFor="password">Password:</label>
                     <input
                         type="password"
                         name="password"
@@ -73,7 +69,7 @@ const Login = () => {
                     Login
                 </button>
                 <p className="mt-4 text-center">
-                    Don't have an account? <a href="/register" className="text-blue-500 hover:underline">Register</a>
+                    Don't have an account? <Link to="/register" className="text-blue-500 hover:underline">Register</Link> {/* Changed to Link */}
                 </p>
             </form>
         </div>
