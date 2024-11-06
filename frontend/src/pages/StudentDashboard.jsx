@@ -1,5 +1,3 @@
-// src/pages/StudentDashboard.jsx
-
 import React from 'react';
 import OutpassForm from '../components/Outpassform';
 import { useNavigate } from 'react-router-dom';

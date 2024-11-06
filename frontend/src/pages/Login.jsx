@@ -18,7 +18,7 @@ const Login = () => {
         try {
             const response = await axios.post('http://localhost:5000/api/login', { ...formData, userType });
             alert('Login successful!');
-            // Redirect based on user type from response
+             
             if (response.data.userType === 'student') {
                 navigate('/student');
             } else if (response.data.userType === 'faculty') {

@@ -1,18 +1,20 @@
-// src/pages/Home.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Home.css'; // Ensure this path is correct
+import './Home.css';
+import geetaImage from '../assets/geeta.jpg';
+import azadImage from '../assets/azad.jpg'; 
+import shastriImage from '../assets/shastri.png'; 
 
 const Home = () => {
   const hostels = [
-    { name: 'Azad Hostel', image: '/images/azad-hostel.jpg' },
-    { name: 'Parmar Hostel', image: '/images/parmar-hostel.jpg' },
-    { name: 'Shashtri Hostel', image: '/images/shashtri-hostel.jpg' },
-    { name: 'Geeta Bhawan', image: '/images/tagore-hostel.jpg' },
+    { name: 'Azad Hostel', image: azadImage }, // Imported image
+    { name: 'Parmar Hostel', image: shastriImage },
+    { name: 'Shashtri Hostel', image: shastriImage },
+    { name: 'Geeta Bhawan', image: geetaImage },
   ];
 
   return (
-    <div className="home-container flex flex-col items-center justify-center">
+    <div className="home-container flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
       <h2 className="text-3xl font-semibold text-gray-700 mb-6">Choose Your Hostel</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {hostels.map((hostel) => (
