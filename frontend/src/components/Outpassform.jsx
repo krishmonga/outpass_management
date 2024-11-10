@@ -10,15 +10,50 @@ const OutpassForm = () => {
     contactNumber: '',
     reason: ''
   });
+  const [loading, setLoading] = useState(false); // Add loading state
+  const [errorMessage, setErrorMessage] = useState(''); // Add error message state
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    // Validate numeric input for contact number (only allow digits and limit to 10 characters)
+    if (name === 'contactNumber' && (!/^\d*$/.test(value) || value.length > 10)) {
+      return;
+    }
+
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Outpass Request Submitted:", formData);
-    
+    setLoading(true); // Start loading
+
+    // Validate the form before submitting
+    if (
+      !formData.name ||
+      !formData.date ||
+      !formData.wardenName ||
+      !formData.hostelNumber ||
+      !formData.rollNumber ||
+      !formData.contactNumber ||
+      !formData.reason
+    ) {
+      setErrorMessage('Please fill in all the fields.');
+      setLoading(false);
+      return;
+    }
+
+    // Submit the form data (example API call, could be replaced with axios)
+    try {
+      console.log("Outpass Request Submitted:", formData);
+      // Replace with actual API call if needed
+      setErrorMessage('');
+      alert('Outpass request submitted successfully!');
+    } catch (error) {
+      setErrorMessage('An error occurred while submitting the request.');
+    } finally {
+      setLoading(false); // End loading
+    }
   };
 
   return (
@@ -101,6 +136,7 @@ const OutpassForm = () => {
           required
         />
       </label>
+
       <label className="block mb-6">
         <span className="text-gray-700">Reason</span>
         <textarea
@@ -114,11 +150,14 @@ const OutpassForm = () => {
         ></textarea>
       </label>
 
+      {errorMessage && <p className="text-red-500 text-center mb-4">{errorMessage}</p>}
+
       <button
         type="submit"
-        className="w-full bg-blue-600 text-white font-semibold py-3 rounded-md hover:bg-blue-700 transition duration-200"
+        className={`w-full bg-blue-600 text-white font-semibold py-3 rounded-md hover:bg-blue-700 transition duration-200 ${loading ? 'bg-blue-300' : ''}`}
+        disabled={loading}
       >
-        Submit
+        {loading ? 'Submitting...' : 'Submit'}
       </button>
     </form>
   );

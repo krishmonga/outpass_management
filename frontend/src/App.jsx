@@ -6,7 +6,7 @@ import StudentDashboard from './pages/StudentDashboard';
 import FacultyDashboard from './pages/FacultyDashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
-
+import OutpassForm from './components/Outpassform';
 
 const App = () => {
   return (
@@ -19,11 +19,12 @@ const App = () => {
         <Route path="/faculty" element={<FacultyDashboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/azad-hostel" element={<StudentDashboard />} />
-        <Route path="/parmar-hostel" element={<StudentDashboard />} />
-        <Route path="/shashtri-hostel" element={<StudentDashboard />} />
-        <Route path="/Geeta Bhawan" element={<StudentDashboard />} />
-
+        
+        {/* Dynamic Hostel Routes */}
+        <Route path="/:hostelName" element={<StudentDashboard />} />
+        
+        {/* Outpass Form specific to a hostel */}
+        <Route path="/outpass/:hostelName" element={<OutpassForm />} />  {/* Example dynamic route for outpass form */}
       </Routes>
     </Router>
   );
