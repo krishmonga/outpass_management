@@ -9,8 +9,8 @@ enum Block {
   type Outpass {
     id: ID!
     name: String!
-    dateFrom: DateTime!
-    dateTo: DateTime!
+    dateFrom: String!
+    dateTo: String!
     hostelNumber: String!
     contactNumber: String!
     reason: String!
@@ -21,8 +21,8 @@ enum Block {
   # Input Type for Creating or Updating an Outpass
   input OutpassInput {
     name: String!
-    dateFrom: DateTime!
-    dateTo: DateTime!
+    dateFrom: String!
+    dateTo: String!
     hostelNumber: String!
     contactNumber: String!
     reason: String!

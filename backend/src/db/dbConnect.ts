@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client';
 let prisma:PrismaClient | null = null;
 
 export const dbConnect = async () => {
+    console.log('inside dbConnect')
     if (!prisma) {
         try {
             prisma = new PrismaClient();

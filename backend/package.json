@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "main": "index.ts",
   "type": "module",
-  "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts"
+ "scripts": {
+    "codegen": "graphql-codegen --watch",
+    "build": "tsc",                  
+    "start": "node dist/index.js",     
+    "dev": "tsc && node dist/index.js" 
   },
   "keywords": [],
   "author": "",
@@ -23,15 +24,20 @@
     "express-session": "^1.18.1",
     "graphql": "^16.9.0",
     "graphql-passport": "^0.6.8",
+    "jsonwebtoken": "^9.0.2",
     "passport-local": "^1.0.0",
     "pg": "^8.13.1"
   },
   "devDependencies": {
+    "@eddeee888/gcg-typescript-resolver-files": "^0.11.0",
+    "@graphql-codegen/cli": "^5.0.3",
+    "@graphql-codegen/client-preset": "^4.5.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/connect-pg-simple": "^7.0.3",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/graphql": "^14.2.3",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.9.0",
     "@types/pg": "^8.11.10",
     "dotenv": "^16.4.5",

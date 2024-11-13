@@ -37,8 +37,6 @@ model User {
   outpasses  Outpass[]
 }
 
-
-
 model Outpass {
   id            String   @id @default(uuid())
   name          String
@@ -50,4 +48,15 @@ model Outpass {
   block         Block
   User          User?    @relation(fields: [userId], references: [id])
   userId        String?
+  isCompleted   Boolean? @default(false)
+}
+
+
+model Session {
+  id        Int      @id @default(autoincrement()) // Unique session ID
+  sid       String   @unique                      // Session ID (from Passport.js)
+  sess      Json     // Serialized session data (user information, etc.)
+  expire    DateTime // Expiration time for session
+  createdAt DateTime @default(now()) // Creation time
+  updatedAt DateTime @updatedAt // Last update time
 }

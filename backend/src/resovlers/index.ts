@@ -1,6 +1,6 @@
 import { mergeResolvers } from "@graphql-tools/merge";
-import  userResolvers  from "./user.resolver";
-import  outpassResolvers  from "./outpass.resolver";
+import  userResolvers  from "./user.resolver.js";
+import  outpassResolvers  from "./outpass.resolver.js";
 
 const mergedResolvers = mergeResolvers([userResolvers, outpassResolvers]);
 

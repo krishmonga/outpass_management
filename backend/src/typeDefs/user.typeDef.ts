@@ -9,11 +9,11 @@ enum Gender {
     id: ID!
     name: String!
     password: String!
-    isWarden: Boolean
+    isStudent: Boolean
     validEmail: Boolean
     email: String!
     gender: Gender   # Use lowercase here for consistency
-    createdAt: DateTime  # Using DateTime instead of Date
+    createdAt: String  # Using DateTime instead of Date
   }
 
   # Query Definitions

@@ -5,27 +5,32 @@ import dotenv from "dotenv";
 import http from "http";
 import cors from "cors";
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
-import mergedTypeDefs from "./typeDefs";
-import mergedResolvers from "./resovlers/index";
+import mergedTypeDefs from "./typeDefs/index.js";
+import mergedResolvers from "./resovlers/index.js";
 
-import pool from "./pgPool";
+import pool from "./pgPool.js";
 import connectPgSimple from 'connect-pg-simple';
 import session from "express-session";
 import { buildContext } from "graphql-passport";
-import { dbConnect } from "./db/dbConnect";
+import { dbConnect } from "./db/dbConnect.js";
 import passport from "passport";
+import { configurePassport } from "./passport/config.js";
 
+configurePassport()
+console.log('check1')
 dotenv.config();
 console.log(process.env.SESSION_SECERT); // Should log the value of your SESSION_SECRET variable
 const app = express();
 const httpServer = http.createServer(app);
 const port = process.env.PORT
-
+console.log('last check',)
 const pgSession = connectPgSimple(session);
 const store = new pgSession({
   pool,                 // PostgreSQL connection pool
-  tableName: 'session', // Optional: specify the session table name
+  tableName: 'Session', // Optional: specify the session table name
 });
+
+console.log({mergedResolvers, mergedTypeDefs})
 
 const server = new ApolloServer({
   typeDefs: mergedTypeDefs,
@@ -33,15 +38,16 @@ const server = new ApolloServer({
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 
+console.log(`check 1.5`,)
   //middlewares
   app.use(cors({
-    origin: "http://localhost:5173", // Removed trailing slash
+    origin: `http://localhost:${port}`, // Removed trailing slash
     credentials: true,
   }));
   app.use(express.json()); // Make sure JSON body parsing is applied globally
-
+  console.log('checkt2',)
   app.use(session({
-    secret: process.env.SESSION_SECRET as string,
+    secret: process.env.SESSION_SECERT as string,
     resave: false,
     saveUninitialized: false,
     cookie: {

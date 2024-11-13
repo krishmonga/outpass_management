@@ -1,5 +1,5 @@
 import { GraphQLLocalStrategy } from "graphql-passport";
-import { dbConnect } from "../db/dbConnect";
+import { dbConnect } from "../db/dbConnect.js";
 import passport from "passport";
 import bcrypt from "bcryptjs";
 import { PrismaClient, User } from "@prisma/client";
