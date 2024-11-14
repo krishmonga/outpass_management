@@ -1,6 +1,6 @@
-import { dbConnect } from "@/db/dbConnect";
+import { dbConnect } from "../db/dbConnect.js";
 import { OutpassInput } from "@/types/Inputs";
-import { Context } from "@/types/passportContext";
+import { Context } from "@/types/PassportContext";
 import { PrismaClient } from "@prisma/client";
 import { GraphQLError } from "graphql";
 

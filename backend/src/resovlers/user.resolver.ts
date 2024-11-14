@@ -1,10 +1,9 @@
 import bcrypt from "bcryptjs"; // For password hashing
 import { PrismaClient } from "@prisma/client";
-import { Context } from "../types/passportContext.js";
 import { GraphQLError } from "graphql";
 import { LoginInput, SignUpInput } from "@/types/Inputs";
-import { dbConnect } from "@/db/dbConnect";
-
+import { dbConnect } from "../db/dbConnect.js";
+import { Context } from "@/types/PassportContext";
 const userResolver = {
   Query: {
     authUser: async (parent: any, __: any, context: Context) => {

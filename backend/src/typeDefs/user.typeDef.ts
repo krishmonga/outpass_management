@@ -32,7 +32,7 @@ enum Gender {
   # Input for SignUp
   input SignUpInput {
     email: String!
-    isStudent: boolean!
+    isStudent: Boolean!
     password: String!
     gender: Gender!  # Using Gender Enum for gender field
   }
