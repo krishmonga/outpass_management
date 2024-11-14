@@ -27,13 +27,13 @@ enum Block {
     contactNumber: String!
     reason: String!
     block: Block!
-    userId: String  # Optional, to link to an existing user
+    userId: String!  # Optional, to link to an existing user
   }
 
   # Query to Fetch an Outpass or All Outpasses
   type Query {
-    getOutpass(id: ID!): Outpass
     getAllOutpasses: [Outpass!]!
+    getOutpass(id: ID!): Outpass
   }
 
   # Mutations to Create, Update, or Delete an Outpass

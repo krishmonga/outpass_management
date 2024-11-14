@@ -17,13 +17,11 @@ import passport from "passport";
 import { configurePassport } from "./passport/config.js";
 
 configurePassport()
-console.log('check1')
 dotenv.config();
 console.log(process.env.SESSION_SECERT); // Should log the value of your SESSION_SECRET variable
 const app = express();
 const httpServer = http.createServer(app);
 const port = process.env.PORT
-console.log('last check',)
 const pgSession = connectPgSimple(session);
 const store = new pgSession({
   pool,                 // PostgreSQL connection pool
@@ -38,14 +36,12 @@ const server = new ApolloServer({
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 
-console.log(`check 1.5`,)
   //middlewares
   app.use(cors({
     origin: `http://localhost:${port}`, // Removed trailing slash
-    credentials: true,
+    credentials: true, // Allow cookies to be sent/received eg - res.clearCookies()
   }));
   app.use(express.json()); // Make sure JSON body parsing is applied globally
-  console.log('checkt2',)
   app.use(session({
     secret: process.env.SESSION_SECERT as string,
     resave: false,
@@ -57,14 +53,14 @@ console.log(`check 1.5`,)
     store: store,
   }));
 
-  app.use(passport.initialize());
+app.use(passport.initialize());
 app.use(passport.session());
 
   await server.start();
 
 app.use("/graphql",
-    expressMiddleware(server, {
-        context: async ({ req, res }) => buildContext({ req, res }),
+    expressMiddleware<any>(server, {
+        context: async ({ req, res }) => buildContext({ req, res } ),
     }),
 );
 

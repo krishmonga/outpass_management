@@ -14,6 +14,7 @@ export const configurePassport = async () => {
                 password,
                 done
             ) => {
+                
                 // Cast 'username' as a string since it's expected to be an email
                 const email = username as string;
 
