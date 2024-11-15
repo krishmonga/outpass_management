@@ -19,14 +19,15 @@ export interface User {
 // Input Types
 export interface SignUpInput {
   email: string;
-  isStudent: boolean;
   password: string;
   gender: Gender;
+  userType: string
 }
 
 export interface LoginInput {
   email: string;
   password: string;
+  userType : string
 }
 
 // Mutation Response Types

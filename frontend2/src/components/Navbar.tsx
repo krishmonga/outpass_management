@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useAppSelector } from "../redux/hooks";
 
 const Navbar = () => {
-  const user = useSelector((state) => state.authUser.user);
+  const user = useAppSelector(state => state.authUser.user)
   console.log("this is user in navbar", user);
 
   return (

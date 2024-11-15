@@ -10,6 +10,7 @@ enum Gender {
     name: String!
     password: String!
     isStudent: Boolean
+    userType: String!
     validEmail: Boolean
     email: String!
     gender: Gender   # Use lowercase here for consistency
@@ -32,8 +33,9 @@ enum Gender {
   # Input for SignUp
   input SignUpInput {
     email: String!
-    isStudent: Boolean!
+     userType: String!
     password: String!
+    confirmPassword: String!
     gender: Gender!  # Using Gender Enum for gender field
   }
 
@@ -41,6 +43,7 @@ enum Gender {
   input LoginInput {
     email: String!
     password: String!
+    userType: String!
   }
 
   # Logout Response

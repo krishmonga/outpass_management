@@ -11,15 +11,16 @@ import { useQuery } from '@apollo/client';
 import { GET_AUTHENTICATED_USER } from './graphql/queries/user.query';
 import Navbar from './components/Navbar';
 import { useDispatch } from 'react-redux';
-import { storeAuthData } from './redux/authSlice';
+import { storeAuthData, User } from './redux/authSlice';
+import { GetAuthenticatedUserResponse } from './types and schemas/getAuthenticatedUser.query';
 
 function AppRoutes() {
     const dispatch = useDispatch()
-    const { data, loading, error } = useQuery(GET_AUTHENTICATED_USER)
-    console.log('this the first query', data)
+    const { data, loading, error } = useQuery<GetAuthenticatedUserResponse>(GET_AUTHENTICATED_USER)
+    console.log('this the first query', data?.authUser?.isStudent)
 
     useEffect(() => {
-        dispatch(storeAuthData(data))
+        if(data) dispatch(storeAuthData(data))
     }, [data, loading])
     console.log(`loading`, loading)
     return (

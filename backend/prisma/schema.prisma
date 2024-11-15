@@ -26,15 +26,17 @@ enum Block {
 }
 
 model User {
-  id         String    @id @default(uuid())
-  name       String?
-  isStudent  Boolean?  @default(false)
-  email      String    @unique
-  validEmail Boolean?  @default(false)
-  password   String
-  gender     Gender
-  createdAt  DateTime  @default(now())
-  outpasses  Outpass[]
+  id               String    @id @default(uuid())
+  name             String?
+  isStudent        Boolean?  @default(false)
+  email            String    @unique
+  validEmail       Boolean?  @default(false)
+  password         String
+  gender           Gender
+  createdAt        DateTime  @default(now())
+  outpasses        Outpass[]
+  verifyCode       String? 
+  verifyCodeExpiry DateTime? 
 }
 
 model Outpass {
@@ -51,12 +53,11 @@ model Outpass {
   isCompleted   Boolean? @default(false)
 }
 
-
 model Session {
   id        Int      @id @default(autoincrement()) // Unique session ID
-  sid       String   @unique                      // Session ID (from Passport.js)
-  sess      Json     // Serialized session data (user information, etc.)
+  sid       String   @unique // Session ID (from Passport.js)
+  sess      Json // Serialized session data (user information, etc.)
   expire    DateTime // Expiration time for session
   createdAt DateTime @default(now()) // Creation time
-  updatedAt DateTime @updatedAt // Last update time
+  updatedAt DateTime? @updatedAt // Last update time
 }

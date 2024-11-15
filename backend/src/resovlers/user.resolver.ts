@@ -4,6 +4,7 @@ import { GraphQLError } from "graphql";
 import { LoginInput, SignUpInput } from "@/types/Inputs";
 import { dbConnect } from "../db/dbConnect.js";
 import { Context } from "@/types/PassportContext";
+import { APOLLO_USER_NOT_FOUND_EMAIL, FACULTY_NOT_VERIFIED, USER_FACULTY, USER_NOT_FOUND, USER_STUDENT } from "../constants.js";
 const userResolver = {
   Query: {
     authUser: async (parent: any, __: any, context: Context) => {
@@ -43,7 +44,7 @@ const userResolver = {
     ) => {
       try {
         const prisma: PrismaClient = await dbConnect();
-        const { email, password, gender, isStudent } = input;
+        const { email, password, gender, userType } = input;
 
         // Check if the email already exists
         const existingUser = await prisma.user.findUnique({
@@ -55,15 +56,16 @@ const userResolver = {
 
         // Hash the password before saving it to the database
         const hashedPassword = await bcrypt.hash(password, 10);
-
+        const name = email.split('@')[0]
         // Create and save the new user using Prisma
         const newUser = await prisma.user.create({
           data: {
+            name,
             email,
             password: hashedPassword,
             gender,
-            validEmail: true, // Assuming email validation happens elsewhere
-            isStudent,
+            validEmail: false, // Assuming email validation happens elsewhere
+            isStudent: userType===USER_STUDENT,
             createdAt: new Date(),
           },
         });
@@ -82,17 +84,22 @@ const userResolver = {
       context: Context
     ) => {
       try {
-        const { email, password } = input;
+        const { email, password, userType } = input;
         const { user } = await context.authenticate("graphql-local", {
           email,
           password,
         });
+        if(!(user?.isStudent) && !(user?.validEmail)) throw new GraphQLError(FACULTY_NOT_VERIFIED)
+        if(!user) throw new GraphQLError(USER_NOT_FOUND)
+        if(!user?.validEmail) throw new GraphQLError(`First verify your email at ${ user?.email}`) // resend the mail
+        if((USER_FACULTY === userType) && user?.isStudent) throw new GraphQLError("You are not verified to be as Faculty member")
 
         if (!user) throw new GraphQLError("Incorrect email or password");
         await context.login(user);
         return user;
       } catch (error: any) {
         console.error("Error in login", error);
+        if(error.message === APOLLO_USER_NOT_FOUND_EMAIL) throw new GraphQLError (USER_NOT_FOUND)
         throw new Error(error.message || "Internal server error");
       }
     },
