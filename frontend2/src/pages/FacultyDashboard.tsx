@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const FacultyDashboard = () => {
+export const FacultyDashboard = () => {
   const navigate = useNavigate();
   const [outpasses, setOutpasses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -73,4 +73,3 @@ const FacultyDashboard = () => {
   );
 };
 
-export default FacultyDashboard;

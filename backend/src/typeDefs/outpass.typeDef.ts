@@ -35,11 +35,21 @@ enum Block {
     getAllOutpasses: [Outpass!]!
     getOutpass(id: ID!): Outpass
   }
+input UpdateOutpassInput {
+  name: String
+  dateFrom: String
+  dateTo: String
+  hostelNumber: String
+  contactNumber: String
+  reason: String
+  block: Block
+  userId: String
+}
 
   # Mutations to Create, Update, or Delete an Outpass
   type Mutation {
     createOutpass(input: OutpassInput!): Outpass
-    updateOutpass(id: ID!, input: OutpassInput!): Outpass
+    updateOutpass(id: ID!, input: UpdateOutpassInput!): Outpass
     deleteOutpass(id: ID!): Outpass
   }
 `

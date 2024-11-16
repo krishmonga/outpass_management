@@ -13,14 +13,14 @@ import { useMutation } from "@apollo/client";
 import { SIGNUP_USER } from "@/graphql/mutations/user.mutation";
 import { useToast } from "@/hooks/use-toast";
 
-export default function Signup() {
+export  const Signup = () => {
     const navigate = useNavigate();
     const { toast } = useToast()
     const form = useForm<z.infer<typeof signUpSchema>>({
         resolver: zodResolver(signUpSchema),
     });
 
-    const [signup, { loading, error }] = useMutation(SIGNUP_USER)
+    const [signup, { loading }] = useMutation(SIGNUP_USER)
     const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
         try {
             console.log("Signup data:", data);
@@ -33,8 +33,9 @@ export default function Signup() {
             })
             toast({title: "Successfully registered"})
             navigate('/login')
-        } catch (error) {
-            toast({ title: `${error}` })
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            toast({ title: `${error.message}` })
             console.error('Error:',error)
         }
     };

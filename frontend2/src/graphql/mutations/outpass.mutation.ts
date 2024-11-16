@@ -1,3 +1,5 @@
+import { gql } from "@apollo/client";
+
 // 3. Mutation to create a new outpass
 export const CREATE_OUTPASS = gql`
   mutation CreateOutpass($input: OutpassInput!) {
@@ -10,10 +12,7 @@ export const CREATE_OUTPASS = gql`
       contactNumber
       reason
       block
-      user {
-        id
-        username
-      }
+     
     }
   }
 `;

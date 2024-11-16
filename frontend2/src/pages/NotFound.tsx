@@ -6,7 +6,7 @@ interface NotFoundProps {
   userType?: string; // Optional user prop to trigger dynamic change
 }
 
-const NotFound: React.FC<NotFoundProps> = ({ userType }) => {
+export const NotFound: React.FC<NotFoundProps> = ({ userType }) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="text-center p-6 bg-white shadow-lg rounded-lg max-w-lg w-full">
@@ -29,5 +29,3 @@ const NotFound: React.FC<NotFoundProps> = ({ userType }) => {
     </div>
   );
 };
-
-export default NotFound;

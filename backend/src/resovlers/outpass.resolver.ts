@@ -45,7 +45,7 @@ const outpassResolvers = {
     ) => {
       try {
         const prisma: PrismaClient = await dbConnect();
-
+        console.log('this is input', input)
         const {
           block,
           contactNumber,

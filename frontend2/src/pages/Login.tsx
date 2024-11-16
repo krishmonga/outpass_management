@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -12,11 +13,11 @@ import UserTypeSwitcher from "@/components/UserTypeSwitcher";
 import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "@/graphql/mutations/user.mutation";
 import { FACULTY_NOT_VERIFIED, USER_NOT_FOUND } from "@/assets/constant";
-import NotFound from "./NotFound";
+import { NotFound } from "./NotFound";
 import { useToast } from "@/hooks/use-toast";
 
 
-export default function Login() {
+export const Login = () => {
   const navigate = useNavigate();
   const {toast} = useToast()
   // React Hook Form setup
@@ -30,7 +31,7 @@ export default function Login() {
    try {
      await login({variables: {input: data}})
      navigate('/')
-   } catch (error: any) {
+   } catch (error : any) {
     console.error("Some error occured", error)
     toast({title: `${error.message}`})
    }

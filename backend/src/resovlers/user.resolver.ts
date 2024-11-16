@@ -57,9 +57,11 @@ const userResolver = {
         // Hash the password before saving it to the database
         const hashedPassword = await bcrypt.hash(password, 10);
         const name = email.split('@')[0]
+        const id = name
         // Create and save the new user using Prisma
         const newUser = await prisma.user.create({
           data: {
+            id,
             name,
             email,
             password: hashedPassword,

@@ -79,4 +79,14 @@ export interface OutpassInput {
   userId?: string;  // Optional field to link to an existing user
 }
 
+export interface UpdateOutpassInput {
+  name?: string;
+  dateFrom?: string;
+  dateTo?: string;
+  hostelNumber?: string;
+  contactNumber?: string;
+  reason?: string;
+  block?: Block;
+  userId?: string;
+}
 

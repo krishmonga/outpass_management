@@ -26,7 +26,7 @@ enum Block {
 }
 
 model User {
-  id               String    @id @default(uuid())
+  id               String    @id 
   name             String?
   isStudent        Boolean?  @default(false)
   email            String    @unique
@@ -37,6 +37,8 @@ model User {
   outpasses        Outpass[]
   verifyCode       String? 
   verifyCodeExpiry DateTime? 
+
+  
 }
 
 model Outpass {

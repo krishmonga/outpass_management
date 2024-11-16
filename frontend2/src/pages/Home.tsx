@@ -5,7 +5,7 @@ import geetaImage from '../assets/geeta.jpg';
 import azadImage from '../assets/azad.jpg';
 import shastriImage from '../assets/shastri.png';
 
-const Home = () => {
+export const Home = () => {
   // Array of hostels with name and image for dynamic rendering
   const hostels = [
     { name: 'Azad Hostel', image: azadImage, alt: 'Azad Hostel building' },
@@ -41,4 +41,3 @@ const Home = () => {
   );
 };
 
-export default Home;
