@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 
-const Register = () => {
+const Signup = () => {
     const [formData, setFormData] = useState({ username: '', email: '', password: '' });
     const [userType, setUserType] = useState('student');
     const [errorMessage, setErrorMessage] = useState('');
@@ -115,4 +115,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default Signup;

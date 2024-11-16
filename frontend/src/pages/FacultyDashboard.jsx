@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 const FacultyDashboard = () => {
   const navigate = useNavigate();
@@ -9,20 +8,7 @@ const FacultyDashboard = () => {
   const [error, setError] = useState('');
 
   // Fetching pending outpasses from the backend (mock API call)
-  useEffect(() => {
-    const fetchOutpasses = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/outpasses/pending');
-        setOutpasses(response.data);
-        setLoading(false);
-      } catch (error) {
-        setError('Failed to fetch pending outpasses. Please try again.');
-        setLoading(false);
-      }
-    };
 
-    fetchOutpasses();
-  }, []);
 
   // Handle approving or rejecting an outpass
   const handleAction = async (outpassId, action) => {
