@@ -9,46 +9,48 @@ import { createOutpassSchema } from "@/types and schemas/createOutpassSchema";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@apollo/client";
 import { CREATE_OUTPASS } from "@/graphql/mutations/outpass.mutation";
+import { useAppSelector } from "@/redux/hooks";
 
 export const StudentDashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
   // React Hook Form setup with Zod schema
-const form = useForm<z.infer<typeof createOutpassSchema>>({
-  resolver: zodResolver(createOutpassSchema),
-  defaultValues: {
-    name: "",
-    dateFrom: "",
-    dateTo: "",
-    hostelNumber: "",
-    contactNumber: "",
-    reason: "",
-    block: "A",
-  },
-});
-  const [createOutpass, {loading}] = useMutation(CREATE_OUTPASS)
-
+  const form = useForm<z.infer<typeof createOutpassSchema>>({
+    resolver: zodResolver(createOutpassSchema),
+    defaultValues: {
+      name: "",
+      dateFrom: "",
+      dateTo: "",
+      hostelNumber: "",
+      contactNumber: "",
+      reason: "",
+      block: "A",
+    },
+  });
+  const [createOutpass, { loading }] = useMutation(CREATE_OUTPASS)
+      const userId = useAppSelector(state => state.authUser.user?.id)
   const onSubmit = async (data: z.infer<typeof createOutpassSchema>) => {
     try {
       console.log("Outpass data submitted:", data);
-  await createOutpass({
-  variables: {
-    input: {
-      name: data.name,
-      dateFrom: data.dateFrom,
-      dateTo: data.dateTo,
-      hostelNumber: data.hostelNumber,
-      contactNumber: data.contactNumber,
-      reason: data.reason,
-      block: data.block,
-      userId: "user123", 
-    },
-  },
-});
+
+      await createOutpass({
+        variables: {
+          input: {
+            name: data.name,
+            dateFrom: data.dateFrom,
+            dateTo: data.dateTo,
+            hostelNumber: data.hostelNumber,
+            contactNumber: data.contactNumber,
+            reason: data.reason,
+            block: data.block,
+            userId: userId
+          },
+        },
+      });
       toast({ title: "Outpass request submitted successfully!" });
       navigate("/home");
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Error submitting outpass request:", error);
       toast({ title: "Failed to submit the request", description: `${error.message}` });
@@ -77,7 +79,8 @@ const form = useForm<z.infer<typeof createOutpassSchema>>({
               <FormItem>
                 <FormLabel>Student Name</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Enter your full name" />
+                  <Input {...field} placeholder="Enter your full name"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -92,7 +95,12 @@ const form = useForm<z.infer<typeof createOutpassSchema>>({
               <FormItem>
                 <FormLabel>Date From</FormLabel>
                 <FormControl>
-                  <Input {...field} type="date" />
+                  <Input {...field} type="date"
+                    onChange={(e) => {
+                      const selectedDate = e.target.value; // YYYY-MM-DD format
+                      // Convert to ISO string with time (assuming start of the day)
+                      field.onChange(new Date(selectedDate).toISOString());
+                    }} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -107,7 +115,12 @@ const form = useForm<z.infer<typeof createOutpassSchema>>({
               <FormItem>
                 <FormLabel>Date To</FormLabel>
                 <FormControl>
-                  <Input {...field} type="date" />
+                  <Input {...field} type="date"
+                    onChange={(e) => {
+                      const selectedDate = e.target.value; // YYYY-MM-DD format
+                      // Convert to ISO string with time (assuming start of the day)
+                      field.onChange(new Date(selectedDate).toISOString());
+                    }} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
