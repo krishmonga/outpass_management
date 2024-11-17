@@ -41,11 +41,20 @@ model User {
   
 }
 
+enum HostelName {
+  AZAD_HOSTEL @map("azad-hostel")
+  PARMAR_HOSTEL @map("parmar-hostel")
+  SHASHTRI_HOSTEL @map("shashtri-hostel")
+  GEETA_BHAWAN @map("geeta-bhawan")
+}
+
+
 model Outpass {
   id            String   @id @default(uuid())
   name          String
   dateFrom      DateTime
   dateTo        DateTime
+  hostelName    HostelName 
   hostelNumber  String   @db.VarChar(10)
   contactNumber String
   reason        String   @db.VarChar(255)

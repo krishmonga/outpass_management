@@ -45,6 +45,7 @@ const userResolver = {
       try {
         const prisma: PrismaClient = await dbConnect();
         const { email, password, gender, userType } = input;
+        
 
         // Check if the email already exists
         const existingUser = await prisma.user.findUnique({
@@ -60,17 +61,19 @@ const userResolver = {
         const id = name
         // Create and save the new user using Prisma
         const newUser = await prisma.user.create({
-          data: {
+          data: { 
             id,
             name,
             email,
             password: hashedPassword,
-            gender,
+            gender : gender? gender : "MALE",
             validEmail: false, // Assuming email validation happens elsewhere
             isStudent: userType===USER_STUDENT,
             createdAt: new Date(),
           },
         });
+
+        if(!(newUser?.isStudent) && !(newUser?.validEmail)) throw new GraphQLError(FACULTY_NOT_VERIFIED)
 
         await context.login(newUser); // direct login
         return newUser;
@@ -93,8 +96,8 @@ const userResolver = {
         });
         if(!(user?.isStudent) && !(user?.validEmail)) throw new GraphQLError(FACULTY_NOT_VERIFIED)
         if(!user) throw new GraphQLError(USER_NOT_FOUND)
+          if((USER_FACULTY === userType) && user?.isStudent) throw new GraphQLError("You are not verified to be as Faculty member")
         if(!user?.validEmail) throw new GraphQLError(`First verify your email at ${ user?.email}`) // resend the mail
-        if((USER_FACULTY === userType) && user?.isStudent) throw new GraphQLError("You are not verified to be as Faculty member")
 
         if (!user) throw new GraphQLError("Incorrect email or password");
         await context.login(user);
