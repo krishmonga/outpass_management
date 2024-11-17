@@ -1,17 +1,22 @@
 import { dbConnect } from "../db/dbConnect.js";
-import { OutpassInput } from "@/types/Inputs";
+import { HostelInput, OutpassInput,  } from "@/types/Inputs";
 import { Context } from "@/types/PassportContext";
 import { PrismaClient } from "@prisma/client";
 import { GraphQLError } from "graphql";
 
 const outpassResolvers = {
   Query: {
-    getAllOutpasses: async (parent: any, _: any, context: Context) => {
+    getAllOutpasses: async (parent: any, input: HostelInput , context: Context) => {
       try {
+        console.log('this is input', input)
+        const hostel = input
+        console.log('this is hostel',hostel)
         const prisma: PrismaClient = await dbConnect();
         const user = await context.getUser();
         if (user?.isStudent) throw new GraphQLError("Student do not have access to this request");
-        const allOutpasses = await prisma.outpass.findMany();
+        const allOutpasses = await prisma.outpass.findMany({
+          where: {hostelName: "AZAD_HOSTEL"}
+        });
         return allOutpasses;
       } catch (error: any) {
         console.error(error);
@@ -55,6 +60,7 @@ const outpassResolvers = {
           name,
           reason,
           userId,
+          hostelName
         } = input;
 
         if (!context.isAuthenticated()) throw new GraphQLError("Unauthorized access");
@@ -69,6 +75,7 @@ const outpassResolvers = {
             reason,
             block,
             userId,
+            hostelName,
             isCompleted: false,
           },
         });

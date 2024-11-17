@@ -3,6 +3,7 @@ import { dbConnect } from "../db/dbConnect.js";
 import passport from "passport";
 import bcrypt from "bcryptjs";
 import { PrismaClient, User } from "@prisma/client";
+import { FACULTY_NOT_VERIFIED } from "../constants.js";
 
 export const configurePassport = async () => {
     const prisma: PrismaClient = await dbConnect();
@@ -21,12 +22,16 @@ export const configurePassport = async () => {
                     // Query the user from the database by email
                     const user: User | null = await prisma.user.findUnique({
                         where: { email },
-                    });
+                    })
 
                     // If user not found, return null
                     if (!user) {
                         return done(null, false, {info: false ,message: "User not found" });
                     }
+                    console.log('check1',)
+                    if(!(user?.isStudent) && !(user?.validEmail)) {
+                        console.log('check2')
+                        return done(null, false, {info: false, message: FACULTY_NOT_VERIFIED})}
 
                     // Check if the password is correct
                     const isMatch = await bcrypt.compare(password as string, user.password);

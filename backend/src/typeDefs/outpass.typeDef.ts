@@ -6,6 +6,13 @@ enum Block {
   D
 }
 
+enum HostelInput {
+  AZAD_HOSTEL 
+  PARMAR_HOSTEL
+  SHASHTRI_HOSTEL
+  GEETA_BHAWAN
+}
+
   type Outpass {
     id: ID!
     name: String!
@@ -28,11 +35,12 @@ enum Block {
     reason: String!
     block: Block!
     userId: String!  # Optional, to link to an existing user
+    hostelName: HostelInput!
   }
 
   # Query to Fetch an Outpass or All Outpasses
   type Query {
-    getAllOutpasses: [Outpass!]!
+    getAllOutpasses(hostelName: HostelInput): [Outpass!]!
     getOutpass(id: ID!): Outpass
   }
 input UpdateOutpassInput {

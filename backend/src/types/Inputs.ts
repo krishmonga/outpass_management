@@ -67,6 +67,13 @@ export interface Outpass {
   user: User; // Reference to the User model
 }
 
+export enum HostelInput {
+  AZAD_HOSTEL = "AZAD_HOSTEL",
+  PARMAR_HOSTEL = "PARMAR_HOSTEL",
+  SHASHTRI_HOSTEL = "SHASHTRI_HOSTEL",
+  GEETA_BHAWAN = "GEETA_BHAWAN",
+}
+
 // Input Types
 export interface OutpassInput {
   name: string;
@@ -77,6 +84,7 @@ export interface OutpassInput {
   reason: string;
   block: Block;
   userId?: string;  // Optional field to link to an existing user
+  hostelName: HostelInput
 }
 
 export interface UpdateOutpassInput {
