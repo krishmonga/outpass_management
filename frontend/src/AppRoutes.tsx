@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { storeAuthData } from './redux/authSlice';
 import { GetAuthenticatedUserResponse } from './types and schemas/getAuthenticatedUser.query';
 import { BackgroundGrid } from './components';
+import {Page} from "@/payments/page";
 
 function AppRoutes() {
     const dispatch = useDispatch()
@@ -43,6 +44,7 @@ function AppRoutes() {
                     <Route path="/signup" element={auth ? <Navigate to={'/'} /> : <Signup />} />
                     <Route path="*" element={<NotFound />} />
                     <Route path='/dashboard/:hostel' element={auth ? student ? <StudentDashboard /> : <FacultyDashboard /> : <Navigate to={'/login'} />} />
+                    <Route path='/test' element={<Page />} />
                 </Routes>
             </BackgroundGrid>
         </Router>

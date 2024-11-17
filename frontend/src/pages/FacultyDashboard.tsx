@@ -1,17 +1,24 @@
 import { GET_ALL_OUTPASSES } from '@/graphql/queries/outpass.query';
+import { formatHostel } from '@/lib/formatHostelString';
 import { useQuery } from '@apollo/client';
 import { useNavigate, useParams } from 'react-router-dom';
 
 export const FacultyDashboard = () => {
   const navigate = useNavigate();
 
+  const {hostel} =  useParams()
+  const hostelName = formatHostel(hostel)
   
-  const {data} =  useQuery(GET_ALL_OUTPASSES)
+  const { data, loading, error } = useQuery(GET_ALL_OUTPASSES, {
+    variables: { hostelName: hostel },
+  });
+  console.log('this is loading', loading)
+  console.log('this is data', data)
+  console.log(hostelName,)
+
+  console.log('this is error', error?.message)
   // Fetching pending outpasses from the backend (mock API call)
 
- const {hostel} =  useParams()
-  console.log('this is hostel', hostel)
-  console.log('this is data', data)
   // Handle approving or rejecting an outpass
 
 
@@ -22,7 +29,7 @@ export const FacultyDashboard = () => {
 
         {/* Pending Outpasses Section */}
         <div className="mb-6">
-          <h3 className="text-xl font-semibold text-gray-700 mb-4">Pending Outpasses</h3>
+          <h3 className="text-xl font-semibold text-gray-700 mb-4">Pending  Outpasses</h3>
 
 
 
