@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 // 3. Mutation to create a new outpass
 export const CREATE_OUTPASS = gql`
-  mutation CreateOutpass($input: HostelInput!) {
+  mutation CreateOutpass($input: OutpassInput!) {
     createOutpass(input: $input) {
       id
       name
@@ -19,7 +19,7 @@ export const CREATE_OUTPASS = gql`
 
 // 4. Mutation to update an existing outpass
 export const UPDATE_OUTPASS = gql`
-  mutation UpdateOutpass($id: ID!, $input: OutpassInput!) {
+  mutation UpdateOutpass($id: ID!, $input: UpdateOutpassInput!) {
     updateOutpass(id: $id, input: $input) {
       id
       name

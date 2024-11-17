@@ -10,12 +10,10 @@ export const FacultyDashboard = () => {
   const hostelName = formatHostel(hostel)
   
   const { data, loading, error } = useQuery(GET_ALL_OUTPASSES, {
-    variables: { hostelName: hostel },
+    variables: { hostelName: hostelName },
   });
-  console.log('this is loading', loading)
-  console.log('this is data', data)
-  console.log(hostelName,)
 
+  console.log('data', data)
   console.log('this is error', error?.message)
   // Fetching pending outpasses from the backend (mock API call)
 
