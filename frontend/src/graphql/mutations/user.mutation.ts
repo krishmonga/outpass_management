@@ -38,3 +38,12 @@ export const LOGOUT_USER = gql`
     }
   }
 `;
+
+export const VERIFY_USER = gql`
+  mutation VerifyUser($verifyToken: String!) {
+    verifyUser(verifyToken: $verifyToken) {
+      id
+      validEmail
+    }
+  }
+`;

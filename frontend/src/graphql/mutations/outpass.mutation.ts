@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { gql } from "@apollo/client";
 
 // 3. Mutation to create a new outpass
@@ -46,3 +47,29 @@ export const DELETE_OUTPASS = gql`
     }
   }
 `;
+
+
+// types
+
+// Define the type for an individual outpass
+export interface Outpass {
+  id: string;
+  name: string;
+  dateFrom: string; // You can use Date type if it's always a date
+  dateTo: string;   // Same as above
+  hostelNumber: string;
+  contactNumber: string;
+  reason: string;
+  block: any;
+  user: any; // Reference to the User model
+}
+
+// Define the type for the entire GraphQL response
+export interface GetAllOutpassesResponse {
+  getAllOutpasses: Outpass[];
+}
+
+// Define the type for query variables
+export interface GetAllOutpassesVariables {
+  hostelName: string;
+}

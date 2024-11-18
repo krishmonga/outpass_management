@@ -28,6 +28,7 @@ enum Gender {
     signup(input: SignUpInput!): User
     login(input: LoginInput!): User
     logout: LogoutResponse
+    verifyUser(verifyToken: String!) : User  
   }
 
   # Input for SignUp
