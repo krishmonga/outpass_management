@@ -8,14 +8,12 @@ const outpassResolvers = {
   Query: {
     getAllOutpasses: async (parent: any, input: HostelInput , context: Context) => {
       try {
-        console.log('this is input', input)
-        const hostel = input
-        console.log('this is hostel',hostel)
+        const {hostelName} = input
         const prisma: PrismaClient = await dbConnect();
         const user = await context.getUser();
         if (user?.isStudent) throw new GraphQLError("Student do not have access to this request");
         const allOutpasses = await prisma.outpass.findMany({
-          where: {hostelName: "AZAD_HOSTEL"}
+          where: {hostelName}
         });
         return allOutpasses;
       } catch (error: any) {
