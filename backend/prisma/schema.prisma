@@ -26,7 +26,7 @@ enum Block {
 }
 
 model User {
-  id               String    @id 
+  id               String    @id
   name             String?
   isStudent        Boolean?  @default(false)
   email            String    @unique
@@ -35,40 +35,38 @@ model User {
   gender           Gender
   createdAt        DateTime  @default(now())
   outpasses        Outpass[]
-  verifyCode       String? 
-  verifyCodeExpiry DateTime? 
-
-  
+  verifyCode       String?
+  verifyCodeExpiry DateTime?
 }
 
 enum HostelName {
-  AZAD_HOSTEL @map("azad-hostel")
-  PARMAR_HOSTEL @map("parmar-hostel")
+  AZAD_HOSTEL     @map("azad-hostel")
+  PARMAR_HOSTEL   @map("parmar-hostel")
   SHASHTRI_HOSTEL @map("shashtri-hostel")
-  GEETA_BHAWAN @map("geeta-bhawan")
+  GEETA_BHAWAN    @map("geeta-bhawan")
 }
 
-
 model Outpass {
-  id            String   @id @default(uuid())
+  id            String     @id @default(uuid())
   name          String
   dateFrom      DateTime
   dateTo        DateTime
-  hostelName    HostelName 
-  hostelNumber  String   @db.VarChar(10)
+  hostelName    HostelName
+  hostelNumber  String     @db.VarChar(10)
   contactNumber String
-  reason        String   @db.VarChar(255)
+  reason        String     @db.VarChar(255)
   block         Block
-  User          User?    @relation(fields: [userId], references: [id])
+  User          User?      @relation(fields: [userId], references: [id])
   userId        String?
-  isCompleted   Boolean? @default(false)
+  isCompleted   Boolean?   @default(false)
+  createdAt     DateTime   @default(now())
 }
 
 model Session {
-  id        Int      @id @default(autoincrement()) // Unique session ID
-  sid       String   @unique // Session ID (from Passport.js)
+  id        Int       @id @default(autoincrement()) // Unique session ID
+  sid       String    @unique // Session ID (from Passport.js)
   sess      Json // Serialized session data (user information, etc.)
   expire    DateTime // Expiration time for session
-  createdAt DateTime @default(now()) // Creation time
+  createdAt DateTime  @default(now()) // Creation time
   updatedAt DateTime? @updatedAt // Last update time
 }

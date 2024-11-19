@@ -1,19 +1,20 @@
 import { dbConnect } from "../db/dbConnect.js";
-import { HostelInput, OutpassInput,  } from "@/types/Inputs";
+import { HostelInput, OutpassInput, } from "@/types/Inputs";
 import { Context } from "@/types/PassportContext";
 import { PrismaClient } from "@prisma/client";
 import { GraphQLError } from "graphql";
 
 const outpassResolvers = {
   Query: {
-    getAllOutpasses: async (parent: any, input: HostelInput , context: Context) => {
+    getAllOutpasses: async (parent: any, input: HostelInput, context: Context) => {
       try {
-        const {hostelName} = input
+        const { hostelName } = input
         const prisma: PrismaClient = await dbConnect();
         const user = await context.getUser();
         if (user?.isStudent) throw new GraphQLError("Student do not have access to this request");
         const allOutpasses = await prisma.outpass.findMany({
-          where: {hostelName}
+          where: { hostelName },
+          include: { User: true }, // Correct case-sensitive field name
         });
         return allOutpasses;
       } catch (error: any) {
@@ -25,14 +26,15 @@ const outpassResolvers = {
       parent: any,
       { id }: { id: string },
       context: Context
-    ) => {
+  ) => {
       try {
         const prisma: PrismaClient = await dbConnect();
         if (!context.isAuthenticated()) throw new GraphQLError("Unauthorized access");
         const outpass = await prisma.outpass.findUnique({
           where: { id },
+          include: {User: true}
         });
-
+        console.log('this is outpass', outpass)
         return outpass
       } catch (error) {
         console.error(error);
@@ -72,9 +74,11 @@ const outpassResolvers = {
             contactNumber,
             reason,
             block,
-            userId,
             hostelName,
             isCompleted: false,
+            User: {
+              connect: { id: userId }, // Connects the `outpass` to an existing user
+            },
           },
         });
 

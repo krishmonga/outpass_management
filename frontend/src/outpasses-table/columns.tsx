@@ -15,12 +15,14 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { useAppSelector } from "@/redux/hooks" // Import the useAppSelector hook
 
-export type Outpass = {
+export type ColumnOutpass = {
   id: string
   name: string
   email: string
   leavePeriod: string
-  status: "pending" | "success" | "failed"
+  status: string
+  createdAt: string
+  
 } 
 
 // Move sendEmailToStudent outside the column definition
@@ -33,7 +35,7 @@ const sendEmailToStudentHandler = async (emailMessage: string, fromMail: string)
   }
 }
 
-export const columns: ColumnDef<Outpass>[] = [
+export const columns: ColumnDef<ColumnOutpass>[] = [
   {
     accessorKey: "id",
     header: "ID",
@@ -103,7 +105,15 @@ export const columns: ColumnDef<Outpass>[] = [
   },
   {
     accessorKey: "createdAt",
-    header: "Created At",
+    header: ({ column }: { column: any }) => (
+      <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          created on
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+    )
   },
   {
     accessorKey: "status",

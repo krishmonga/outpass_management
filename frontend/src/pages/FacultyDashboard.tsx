@@ -3,52 +3,11 @@ import { GET_ALL_OUTPASSES } from '@/graphql/queries/outpass.query';
 import { formatHostel } from '@/lib/formatHostelString';
 import { useQuery } from '@apollo/client';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import { DataTable } from '../outpasses-table/data-table';
-import { columns, Outpass } from '../outpasses-table/columns';
+import { columns } from '../outpasses-table/columns';
 import { GetAllOutpassesResponse, GetAllOutpassesVariables } from '@/graphql/mutations/outpass.mutation';
-import { Loading } from '@/components';
+import { formatOutpassForTable } from '@/lib/formatOutpassForTable';
 
-async function getData(): Promise<Payment[]> {
-  // Mock API data fetching
-  return [
-    {
-      id: '1',
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      leavePeriod: '5',
-      status: 'pending',
-    },
-    {
-      id: '2',
-      name: 'Jane Smith',
-      email: 'jane.smith@example.com',
-      leavePeriod: '10',
-      status: 'success',
-    },
-    {
-      id: '3',
-      name: 'Alice Johnson',
-      email: 'alice.johnson@example.com',
-      leavePeriod: '7',
-      status: 'failed',
-    },
-    {
-      id: '4',
-      name: 'Bob Brown',
-      email: 'bob.brown@example.com',
-      leavePeriod: '15',
-      status: 'pending',
-    },
-    {
-      id: '5',
-      name: 'Charlie Davis',
-      email: 'charlie.davis@example.com',
-      leavePeriod: '12',
-      status: 'success',
-    },
-  ];
-}
 
 export const FacultyDashboard = () => {
   const navigate = useNavigate();
@@ -59,23 +18,13 @@ export const FacultyDashboard = () => {
     variables: { hostelName },
   });
 
-  const [tableData, setTableData] = useState<Outpass[]>([]);
-
-  useEffect(() => {
-    const fetchTableData = async () => {
-      const data = await getData();
-      setTableData(data);
-    };
-    fetchTableData();
-  }, []);
-
-  
-
-  console.log('GraphQL data', outpassData?.getAllOutpasses);
   console.log('GraphQL error', error?.message);
+  const unformatedData = outpassData?.getAllOutpasses;
 
+  console.log(`unformat`, unformatedData)
+  const formatedTableData = formatOutpassForTable(unformatedData)
+  console.log('formated', formatedTableData)
   if(loading) return <h1>loader</h1> // temperary
-  if(outpassData?.getAllOutpasses == undefined) return null // iska bhi logic likhna ha
 
   return (
     <div className="min-h-screen bg-transparent p-6">
@@ -98,7 +47,7 @@ export const FacultyDashboard = () => {
         {/* Payments Data Table Section */}
         <div className="mb-6">
           <h3 className="text-xl font-semibold text-gray-700 mb-4">Payments Table</h3>
-          <DataTable columns={columns} data={outpassData?.getAllOutpasses} />
+          <DataTable columns={columns} data={formatedTableData} />
         </div>
 
         {/* Back to Home Button */}

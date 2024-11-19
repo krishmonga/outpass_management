@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { gql } from "@apollo/client";
+import { User } from "./user.mutation";
 
 // 3. Mutation to create a new outpass
 export const CREATE_OUTPASS = gql`
@@ -51,7 +52,13 @@ export const DELETE_OUTPASS = gql`
 
 // types
 
-// Define the type for an individual outpass
+enum Block {
+  A = "A",
+  B = "B",
+  C = "C",
+  D = "D"
+}
+
 export interface Outpass {
   id: string;
   name: string;
@@ -60,8 +67,11 @@ export interface Outpass {
   hostelNumber: string;
   contactNumber: string;
   reason: string;
-  block: any;
-  user: any; // Reference to the User model
+  block: Block;
+  isCompleted: boolean
+  User: User; // Reference to the User model
+  createdAt: Date
+  
 }
 
 // Define the type for the entire GraphQL response

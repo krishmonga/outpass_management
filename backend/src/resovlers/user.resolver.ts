@@ -104,7 +104,9 @@ const userResolver = {
         const { user } = await context.authenticate("graphql-local", {
           email,
           password,
-        });
+        }); // gives false not finding
+        if(!user) throw new GraphQLError("User not found")
+        console.log('this is user in loginResolver', user)
         if (!(user?.isStudent) && !(user?.validEmail)) throw new GraphQLError(FACULTY_NOT_VERIFIED)
         if (!user) throw new GraphQLError(USER_NOT_FOUND)
         if ((USER_FACULTY === userType) && user?.isStudent) throw new GraphQLError("You are not verified to be as Faculty member")

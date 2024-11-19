@@ -1,14 +1,21 @@
 import { twMerge } from 'tailwind-merge'
 import { ActionButton, ActionButtonProps } from './ActionButton'
 import {MdLogout } from 'react-icons/md'
-import { useMutation } from '@apollo/client'
+import { useApolloClient, useMutation } from '@apollo/client'
 import { LOGOUT_USER } from '@/graphql/mutations/user.mutation'
 import { GET_AUTHENTICATED_USER } from '@/graphql/queries/user.query'
 import { useToast } from '@/hooks/use-toast'
 
 export const LogoutButton = ({ className , ...props }: ActionButtonProps) => {
   const {toast} = useToast()
-  const [logout, {loading}] = useMutation(LOGOUT_USER, {refetchQueries: [GET_AUTHENTICATED_USER]})
+
+const client = useApolloClient();  // Get the Apollo Client instance
+const [logout, { loading }] = useMutation(LOGOUT_USER, {
+  refetchQueries: [GET_AUTHENTICATED_USER],
+  update() {
+    client.cache.reset();  // Reset the cache
+  }
+});
 
   const handleLogout = async () => {
     console.log('clicked on logout BUtton')
