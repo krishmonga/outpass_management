@@ -22,7 +22,8 @@
     "baseUrl": ".",                               // Base directory for resolving non-relative module imports
     "paths": {                                    // Path mappings to alias module imports
       "@/*": ["src/*"]
-    }
+    },
+    "jsx": "react", 
   },
   "include": [
     "src/**/*.ts",                                // Include all TypeScript files in the src folder

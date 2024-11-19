@@ -16,6 +16,7 @@ import { FACULTY_NOT_VERIFIED, USER_NOT_FOUND } from "@/assets/constant";
 import { NotFound } from "./NotFound";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
+import { GET_AUTHENTICATED_USER } from "@/graphql/queries/user.query";
 
 
 export const Login = () => {
@@ -25,7 +26,7 @@ export const Login = () => {
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
   });
-  const [login, {loading, error}] = useMutation(LOGIN_USER)
+  const [login, {loading, error}] = useMutation(LOGIN_USER, {refetchQueries: [GET_AUTHENTICATED_USER]})
 
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     console.log('this is the data', data)

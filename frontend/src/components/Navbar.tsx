@@ -4,7 +4,7 @@ import { ActionButton, Logo, LogoutButton, ProfileButton } from "@/components";
 import { NavigateLink } from "./Links";
 
 
-const Navbar = () => {
+export const Navbar = () => {
   const user = useAppSelector(state => state.authUser.user)
 
   const location = useLocation();
@@ -45,5 +45,3 @@ const Navbar = () => {
     </nav>
   );
 };
-
-export default Navbar;

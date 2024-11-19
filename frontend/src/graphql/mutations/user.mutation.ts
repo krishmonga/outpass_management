@@ -38,3 +38,29 @@ export const LOGOUT_USER = gql`
     }
   }
 `;
+
+export const VERIFY_USER = gql`
+  mutation VerifyUser($verifyToken: String!) {
+    verifyUser(verifyToken: $verifyToken) {
+      id
+      validEmail
+    }
+  }
+`;
+
+enum Gender {
+ MALE = "MALE",
+  FEMALE ="FEMALE"
+}
+
+export interface User {
+  id: string; // ID is typically represented as a string
+  name: string;
+  password: string;
+  isStudent?: boolean; // Optional field
+  userType: string;
+  validEmail: boolean;
+  email: string;
+  gender?: Gender; // Optional field, corresponds to the "Gender" enum
+  createdAt: string; // ISO 8601 date-time string
+}

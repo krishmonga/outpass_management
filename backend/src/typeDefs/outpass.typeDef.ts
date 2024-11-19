@@ -22,7 +22,9 @@ enum HostelInput {
     contactNumber: String!
     reason: String!
     block: Block!
-    user: User   # A reference to the User model (Ensure User type is defined elsewhere)
+    User: User  # FUCKING ALWAYS SAME NAME!!!!!!
+    isCompleted: Boolean
+    createdAt: String
   }
 
   # Input Type for Creating or Updating an Outpass
