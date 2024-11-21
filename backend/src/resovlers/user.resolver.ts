@@ -1,13 +1,14 @@
 import bcrypt from "bcryptjs"; // For password hashing
 import { PrismaClient } from "@prisma/client";
 import { GraphQLError } from "graphql";
-import { LoginInput, SignUpInput } from "@/types/Inputs";
+import { EmailResponse, LoginInput, SendEmailInput, SignUpInput, VerifyTokenInput } from "@/types/Inputs";
 import { dbConnect } from "../db/dbConnect.js";
 import { Context } from "@/types/PassportContext";
 import { APOLLO_USER_NOT_FOUND_EMAIL, FACULTY_NOT_VERIFIED, USER_FACULTY, USER_NOT_FOUND, USER_STUDENT } from "../constants.js";
 import { createVerificationToken } from "../helpers/createVerificationToken.js";
 import { sendVerificationEmail } from "../helpers/sendVerificationEmail.js";
 import crypto from "crypto";
+import { sendEmailTo } from "../helpers/sendEmailTo.js";
 
 
 const userResolver = {
@@ -82,7 +83,7 @@ const userResolver = {
           },
         });
 
-        const emailResponse = await sendVerificationEmail(email, verificationToken, id, isStudent)
+        await sendVerificationEmail(email, verificationToken, id, isStudent)
 
         if (!(newUser?.isStudent) && !(newUser?.validEmail)) throw new GraphQLError(FACULTY_NOT_VERIFIED)
 
@@ -105,9 +106,10 @@ const userResolver = {
           email,
           password,
         }); // gives false not finding
-        if(!user) throw new GraphQLError("User not found")
+        if (!user) throw new GraphQLError("User not found")
         console.log('this is user in loginResolver', user)
         if (!(user?.isStudent) && !(user?.validEmail)) throw new GraphQLError(FACULTY_NOT_VERIFIED)
+        if (!user.validEmail) throw new GraphQLError("Verify your accound first")
         if (!user) throw new GraphQLError(USER_NOT_FOUND)
         if ((USER_FACULTY === userType) && user?.isStudent) throw new GraphQLError("You are not verified to be as Faculty member")
         if (!user?.validEmail) throw new GraphQLError(`First verify your email at ${user?.email}`) // resend the mail
@@ -133,31 +135,32 @@ const userResolver = {
       }
     },
 
-    // input to be a verification code
-    verifyUser: async (_: any, input: string, context: Context) => {
+
+    verifyUser: async (_: any, { verifyToken }: VerifyTokenInput, context: Context) => {
       try {
+        console.log('in here verifyUser',)
         const prisma = await dbConnect()
-        const token = input
 
         const hashedToken = crypto
           .createHash("sha256")
-          .update(token) // got token from /:token
+          .update(verifyToken) // got token from /:token
           .digest("hex");
 
-
-        const user = await prisma.user.findMany({
+        console.log('this is hashedToken', hashedToken)
+        const user = await prisma.user.findFirst({
           where: {
             AND: [{ validEmail: false }, { verifyCode: hashedToken }],
           },
         });
-
-        if (user.length === 0) { throw new GraphQLError("Error verifying the user: User not found"); }
-        if (user[0].verifyCodeExpiry && user[0].verifyCodeExpiry.getTime() < Date.now()) {
+        console.log('this is user', user)
+        if (!user) throw new GraphQLError("Wrong Token")
+        console.log(Number(user.verifyCodeExpiry), Date.now())
+        if (Number(user.verifyCodeExpiry) && Number(user.verifyCodeExpiry) < Date.now()) {
           throw new GraphQLError("Verification token expired");
         }
-        
+
         const updatedUser = await prisma.user.update({
-          where: { id: user[0].id }, // Assuming `id` is the unique identifier for the user
+          where: { id: user.id }, // Assuming `id` is the unique identifier for the user
           data: { validEmail: true, verifyCode: null, verifyCodeExpiry: null },
         });
 
@@ -168,7 +171,65 @@ const userResolver = {
       }
 
 
+    },
+    resendVerificationCode: async (_: any, { email }: { email: string }): Promise<EmailResponse> => { /// Yeah aise bhi hota ha, FUCK!!
+      try {
+        const prisma: PrismaClient = await dbConnect();
+
+        // Check if the user exists
+        const user = await prisma.user.findUnique({
+          where: { email },
+        });
+
+        if (!user) {
+          throw new GraphQLError("User not found");
+        }
+
+        if (user.validEmail) {
+          throw new GraphQLError("Email is already verified");
+        }
+
+        // Generate a new verification token
+        const { hashedToken, verificationCodeExpiry, verificationToken } = createVerificationToken();
+
+        // Update the user's verification code and expiry
+        await prisma.user.update({
+          where: { email },
+          data: {
+            verifyCode: hashedToken,
+            verifyCodeExpiry: verificationCodeExpiry,
+          },
+        });
+
+        // Send the verification email
+        await sendVerificationEmail(email, verificationToken, user.id, user.isStudent as boolean);
+
+        return { success: true, message: "Verification code resent successfully" };
+      } catch (error: any) {
+        console.error("Error in resendVerificationCode", error);
+        throw new GraphQLError(`Internal server error: ${error.message}`);
+      }
+    },
+
+    sendEmailTo: async(_:any, {input}:{ input :SendEmailInput}, context: Context) => {
+    try {
+        const {sendTo, sendFrom, message} = input
+        console.log({sendTo, sendFrom, message})
+        const prisma = await dbConnect()
+          const user = await prisma.user.findUnique({
+            where: { email: sendTo },
+          });
+          if (!user) {
+            throw new GraphQLError("User not found you sending message to");
+          }
+        const response = await sendEmailTo(sendTo, sendFrom, message)
+        return response
+    } catch (error: any) {
+          console.error("Error in sendEmailTo", error);
+        throw new GraphQLError(`Internal server error: ${error.message}`);
     }
+
+    },
   },
 };
 

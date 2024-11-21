@@ -10,6 +10,7 @@ import { GetAuthenticatedUserResponse } from './types and schemas/getAuthenticat
 import { BackgroundGrid, Loading, Navbar } from './components';
 import {FacultyDashboard} from "@/pages/FacultyDashboard";
 import VerificationPage from './pages/VerificationPage';
+import { Test } from './components/Test';
 
 function AppRoutes() {
     const dispatch = useDispatch()
@@ -35,7 +36,7 @@ function AppRoutes() {
                     <Route path="/signup" element={auth ? <Navigate to={'/'} /> : <Signup />} />
                     <Route path="*" element={<NotFound />} />
                     <Route path='/dashboard/:hostel' element={auth ? student ? <StudentDashboard /> : <FacultyDashboard /> : <Navigate to={'/login'} />} />
-                    <Route path='/test' element={<FacultyDashboard />} />
+                    <Route path='/test' element={<Test />} />
                     <Route path='/verify/:token' element={<VerificationPage />} />
                 </Routes>
             </BackgroundGrid>

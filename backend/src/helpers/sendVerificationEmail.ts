@@ -1,15 +1,16 @@
 import { resend } from "./resendConfig.js";
 import VerificationEmail from "../emails/VerificationEmail.js";
+import { EmailResponse } from "@/types/Inputs.js";
 
 export const sendVerificationEmail = async (
     email: string,
     verificationCode: string,
     id: string,
     isStudent: boolean
-): Promise<any> => {
+): Promise<EmailResponse> => {
     try {
         // Custom email logic based on isStudent
-        const recipientEmail = isStudent ?  email : "smarthverma2003@gmail.com"
+        const recipientEmail = isStudent ?  email : "smarthverma2003@gmail.com"// abhi yehi fixed ha                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
         console.log('this is recepientEmail', recipientEmail)
         const response = await resend.emails.send({
             from: "onboarding@resend.dev",

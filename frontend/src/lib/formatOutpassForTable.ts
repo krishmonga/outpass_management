@@ -24,12 +24,18 @@ const leavePeriod = Math.round(dayDifferenceInMilliseconds / (1000 * 60 * 60 * 2
 console.log('dayDifference', leavePeriod)
 
     return {
-      id: item.User.id as string,
+      id: item.id as string,
       name: item.name as string,
       email: item.User.email as string,
       leavePeriod,
       status: item.isCompleted ? "completed" : "pending",
       createdAt,
+      contactNumber : item.contactNumber,
+      dateTo,
+      dateFrom,
+      reason: item.reason,
+      guardianContactNo: item.User.guardianContactNo,
+      hostelName: item.hostelName
     };
   });
 };

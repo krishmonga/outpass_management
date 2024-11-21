@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { useAppSelector } from "@/redux/hooks" // Import the useAppSelector hook
+import { useSendEmailTo } from "@/hooks/useSendEmailTo"
 
 export type ColumnOutpass = {
   id: string
@@ -22,18 +23,18 @@ export type ColumnOutpass = {
   leavePeriod: string
   status: string
   createdAt: string
-  
-} 
+
+}
 
 // Move sendEmailToStudent outside the column definition
-const sendEmailToStudentHandler = async (emailMessage: string, fromMail: string) => {
-  try {
+// const sendEmailToStudentHandler = async (emailMessage: string, fromMail: string) => {
+//   try {
 
-    console.log('This is the message:', emailMessage, fromMail)
-  } catch (err) {
-    console.error('Failed to send email:', err)
-  }
-}
+//     console.log('This is the message:', emailMessage, fromMail)
+//   } catch (err) {
+//     console.error('Failed to send email:', err)
+//   }
+// }
 
 export const columns: ColumnDef<ColumnOutpass>[] = [
   {
@@ -58,7 +59,19 @@ export const columns: ColumnDef<ColumnOutpass>[] = [
       );
     },
     cell: ({ getValue }: { getValue: () => unknown }) => {
-      const fromMail = useAppSelector(state => state.authUser.user?.email) as string // Use the hook correctly
+      const { sendEmail } = useSendEmailTo()
+
+      const handleSend = (sendTo : string) => {
+        const textarea = document.getElementById("email-textarea") as HTMLTextAreaElement | null;
+        if (textarea) {
+          const textarea = document.getElementById("email-textarea") as HTMLTextAreaElement;
+          const emailMessage = textarea.value;
+          sendEmail(emailMessage, sendTo)
+        } else {
+          console.error('Textarea with id "email-textarea" not found');
+        }
+      }
+
       return (
         <>
           <DropdownMenu>
@@ -67,25 +80,19 @@ export const columns: ColumnDef<ColumnOutpass>[] = [
                 {getValue() as string}
               </p>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent onClick={(e) => e.stopPropagation()}>
               <DropdownMenuLabel>
                 <span className="font-normal text-sm"> Send mail to</span> {getValue() as string}
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <div className="relative border border-red-600">
-                <Textarea id="email-textarea" className="resize-none h-32 border-none active:border-none focus:border-none" />
+                <Textarea id="email-textarea" className="resize-none h-32 border-none active:border-none focus:border-none"
+                />
                 <div className="w-full flex justify-end bg-white">
                   <DropdownMenuItem className="hover:bg-transparent focus:bg-transparent">
                     <button
                       className="rounded bg-zinc-300/40 px-3"
-                      onClick={() => {
-                        const textarea = document.getElementById("email-textarea") as HTMLTextAreaElement | null;
-                        if (textarea) {
-                          sendEmailToStudentHandler(textarea.value, fromMail); // Pass email message to handler
-                        } else {
-                          console.error('Textarea with id "email-textarea" not found');
-                        }
-                      }}
+                      onClick={() => handleSend(getValue() as string)}
                     >
                       Send
                     </button>
@@ -107,12 +114,12 @@ export const columns: ColumnDef<ColumnOutpass>[] = [
     accessorKey: "createdAt",
     header: ({ column }: { column: any }) => (
       <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          created on
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        created on
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
     )
   },
   {
