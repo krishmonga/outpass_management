@@ -9,12 +9,13 @@ enum Gender {
     id: ID!
     name: String!
     password: String!
-    isStudent: Boolean
+    isStudent: Boolean!
     userType: String!
     validEmail: Boolean
     email: String!
     gender: Gender   # Use lowercase here for consistency
     createdAt: String  # Using DateTime instead of Date
+    guardianContactNo: String
   }
 
   # Query Definitions
@@ -28,8 +29,23 @@ enum Gender {
     signup(input: SignUpInput!): User
     login(input: LoginInput!): User
     logout: LogoutResponse
-    verifyUser(verifyToken: String!) : User  
+    verifyUser(verifyToken: String!) : User 
+    resendVerificationCode(email: String!): EmailResponse!
+    
+    sendEmailTo(input: SendEmailInput!): EmailResponse
+ 
   }
+
+  type EmailResponse {
+  sucess: Boolean!
+  message: String!
+}
+
+input SendEmailInput {
+  sendTo: String!
+  sendFrom: String!
+  message: String!
+}
 
   # Input for SignUp
   input SignUpInput {

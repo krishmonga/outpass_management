@@ -53,6 +53,7 @@ export interface User {
   email: string;
   gender: Gender;
   createdAt: string; // Consider using Date type if working with dates
+  guardianContactNo: string
 }
 
 export interface Outpass {
@@ -101,3 +102,17 @@ export interface UpdateOutpassInput {
   userId?: string;
 }
 
+export interface VerifyTokenInput {
+  verifyToken: string
+}
+
+export interface EmailResponse {
+  success: boolean;
+  message: string;
+}
+
+export interface SendEmailInput {
+  sendTo: string;
+  sendFrom: string;
+  message: string;
+}

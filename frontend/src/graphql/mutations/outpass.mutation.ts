@@ -71,7 +71,7 @@ export interface Outpass {
   isCompleted: boolean
   User: User; // Reference to the User model
   createdAt: Date
-  
+  hostelName: string
 }
 
 // Define the type for the entire GraphQL response

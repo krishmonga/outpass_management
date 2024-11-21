@@ -47,10 +47,18 @@ export const VERIFY_USER = gql`
     }
   }
 `;
+export const SEND_EMAIL_TO = gql`
+mutation SendEmailTo($input: SendEmailInput!) {
+  sendEmailTo(input: $input) {
+    message
+    sucess
+  }
+}
+`
 
 enum Gender {
- MALE = "MALE",
-  FEMALE ="FEMALE"
+  MALE = "MALE",
+  FEMALE = "FEMALE"
 }
 
 export interface User {
@@ -63,4 +71,5 @@ export interface User {
   email: string;
   gender?: Gender; // Optional field, corresponds to the "Gender" enum
   createdAt: string; // ISO 8601 date-time string
+  guardianContactNo?: string // from dataBase
 }

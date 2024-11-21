@@ -15,6 +15,7 @@ export const GET_ALL_OUTPASSES = gql`
       User {
       id
       email
+      
     }
     
     }
@@ -36,6 +37,7 @@ export const GET_OUTPASS = gql`
       user {
         id
         username
+          guardianContactNo
       }
     }
   }

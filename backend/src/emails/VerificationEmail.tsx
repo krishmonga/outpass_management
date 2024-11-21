@@ -61,17 +61,21 @@ export default function VerificationEmail({
         </Section>
         <Section>
           <Text style={{ fontSize: "16px", color: "#555" }}>
-            Hi <strong>{isStudent? id : "Owner" }</strong>,
+            Hi <strong>{isStudent ? id : "Owner"}</strong>,
           </Text>
           <Text style={{ fontSize: "16px", color: "#555", marginTop: "10px" }}>
-            {isStudent
-              ? "Thank you for signing up! Please click the button below to verify your account and complete your registration."
-              : `${id} is requesting to be considered as a faculty member. Please click the button below to confirm your request.`}
+            {isStudent ? (
+              "Thank you for signing up! Please click the button below to verify your account and complete your registration."
+            ) : (
+              <>
+                <strong>{id}</strong> is requesting to be considered as a faculty member. Please click the button below to confirm your request.
+              </>
+            )}
           </Text>
         </Section>
         <Section style={{ textAlign: "center", marginTop: "20px" }}>
           <Button
-            href={`http://localhost:3000/verify/${verificationCode}`}
+            href={`http://localhost:5173/verify/${verificationCode}`}
             style={{
               backgroundColor: "#4caf50",
               color: "#fff",
@@ -84,7 +88,7 @@ export default function VerificationEmail({
           >
             {isStudent ? "Verify My Account" : "Confirm Faculty Request"}
           </Button>
-        </Section>   
+        </Section>
         <Section style={{ marginTop: "20px" }}>
           <Text style={{ fontSize: "14px", color: "#aaa", textAlign: "center" }}>
             If you didn’t request this email, you can safely ignore it.

@@ -16,6 +16,7 @@ const outpassResolvers = {
           where: { hostelName },
           include: { User: true }, // Correct case-sensitive field name
         });
+        console.log('all outpasses', allOutpasses)
         return allOutpasses;
       } catch (error: any) {
         console.error(error);
